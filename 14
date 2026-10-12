@@ -1,0 +1,62 @@
+# Experiment: Nmap Network Scanning
+# Network Discovery, Port Scanning, OS Detection,
+# and Service Enumeration
+
+import subprocess
+
+def run_scan(command):
+    print("\nRunning command:", " ".join(command))
+    try:
+        subprocess.run(command, check=False)
+    except FileNotFoundError:
+        print("Error: Nmap is not installed or not in PATH.")
+
+def main():
+    target = input("Enter target IP address: ").strip()
+
+    if not target:
+        print("Target IP address is required.")
+        return
+
+    while True:
+        print("\n===== Nmap Network Scanner =====")
+        print("1. Network Discovery")
+        print("2. Port Scanning")
+        print("3. Scan Specific Ports")
+        print("4. OS Detection")
+        print("5. Service Version Detection")
+        print("6. OS and Service Detection")
+        print("7. Scan All TCP Ports")
+        print("8. Exit")
+
+        choice = input("Enter your choice: ").strip()
+
+        if choice == "1":
+            command = ["nmap", "-sn", target]
+        elif choice == "2":
+            command = ["nmap", target]
+        elif choice == "3":
+            ports = input("Enter ports (e.g. 22,80,443): ").strip()
+            if not ports:
+                print("Ports are required.")
+                continue
+            command = ["nmap", "-p", ports, target]
+        elif choice == "4":
+            command = ["nmap", "-O", target]
+        elif choice == "5":
+            command = ["nmap", "-sV", target]
+        elif choice == "6":
+            command = ["nmap", "-A", target]
+        elif choice == "7":
+            command = ["nmap", "-p-", target]
+        elif choice == "8":
+            print("Experiment completed.")
+            break
+        else:
+            print("Invalid choice. Try again.")
+            continue
+
+        run_scan(command)
+
+if __name__ == "__main__":
+    main()
